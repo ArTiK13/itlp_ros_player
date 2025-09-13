@@ -1,0 +1,35 @@
+<launch>
+
+  <!-- HDL -->
+  <param name="use_sim_time" value="true" />
+  <include file="$(find hdl_localization)/launch/hdl_localization.launch" />
+
+  <!-- DLO_odom -->
+  <include file="$(find direct_lidar_odometry)/launch/dlo.launch" />
+
+  <!-- gt_publisher -->
+  <node pkg="player" type="gt_for_itlp.py" name="gt_tf_publisher" output="screen">
+    <param name="path_to_gt" value="$(find bag_player)/data/itlp_gt_fixed.csv"/>
+    <param name="odom_topic" value="/robot/dlo/odom_node/odom"/>
+    <param name="source_frame" value="map"/>
+    <param name="target_frame" value="robot/base_link"/>
+  </node>
+
+  <!-- trajectory_estimated_publisher -->
+  <node pkg="hector_trajectory_server" type="hector_trajectory_server" name="trajectory_estimated">
+    <param name="target_frame_name" value="map"/>
+    <param name="source_frame_name" value="base_link"/>
+    <remap from="/trajectory" to="/trajectory_estimated"/>
+  </node>
+
+  <!-- gt_estimated_publisher -->
+  <node pkg="hector_trajectory_server" type="hector_trajectory_server" name="trajectory_gt">
+    <param name="target_frame_name" value="map"/>
+    <param name="source_frame_name" value="robot/base_link"/>
+    <remap from="/trajectory" to="/trajectory_gt"/>
+  </node>
+  
+  <!-- RViz -->
+  <node pkg="rviz" type="rviz" name="hdl_rviz" args="-d $(find hdl_localization)/rviz/hdl_localization.rviz"/>
+
+</launch>

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>player</name>
+  <version>1.0.0</version>
+  <description>itlp_ros_player</description>
+
+  <maintainer email="ubileyka19@gmail.com">xartik</maintainer>
+
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export>
+
+  </export>
+</package>
